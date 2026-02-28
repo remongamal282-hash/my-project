@@ -7,14 +7,23 @@ use App\Models\Prodect;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use Throwable;
 
 class ProdectWebController extends Controller
 {
     public function index(): View
     {
-        $prodects = Prodect::latest()->get();
+        $dbError = null;
+        $prodects = collect();
 
-        return view('prodects.index', compact('prodects'));
+        try {
+            $prodects = Prodect::latest()->get();
+        } catch (Throwable $e) {
+            report($e);
+            $dbError = 'Database is unavailable right now. Please configure production database settings.';
+        }
+
+        return view('prodects.index', compact('prodects', 'dbError'));
     }
 
     public function create(): View

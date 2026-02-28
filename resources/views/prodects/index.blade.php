@@ -17,6 +17,7 @@
         form.logout-form { display: inline-block; margin-left: 8px; }
         button.btn-logout { background: #334155; color: #fff; border: 0; border-radius: 8px; padding: 8px 12px; cursor: pointer; }
         .success { background: #ecfdf5; border: 1px solid #10b981; color: #065f46; padding: 10px; border-radius: 8px; margin-bottom: 12px; }
+        .error { background: #fef2f2; border: 1px solid #ef4444; color: #991b1b; padding: 10px; border-radius: 8px; margin-bottom: 12px; }
     </style>
 </head>
 <body>
@@ -25,6 +26,10 @@
 
         @if (session('success'))
             <div class="success">{{ session('success') }}</div>
+        @endif
+
+        @if (!empty($dbError))
+            <div class="error">{{ $dbError }}</div>
         @endif
 
         <a class="btn" href="{{ route('web.prodects.create') }}">Add New Prodect</a>
