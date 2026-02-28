@@ -28,11 +28,17 @@
             <div class="success">{{ session('success') }}</div>
         @endif
 
+        @if (session('error'))
+            <div class="error">{{ session('error') }}</div>
+        @endif
+
         @if (!empty($dbError))
             <div class="error">{{ $dbError }}</div>
         @endif
 
-        <a class="btn" href="{{ route('web.prodects.create') }}">Add New Prodect</a>
+        @if (empty($dbError))
+            <a class="btn" href="{{ route('web.prodects.create') }}">Add New Prodect</a>
+        @endif
         <form class="logout-form" action="{{ route('logout') }}" method="POST">
             @csrf
             <button class="btn-logout" type="submit">Logout</button>
