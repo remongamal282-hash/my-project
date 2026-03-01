@@ -11,6 +11,7 @@ a2dismod mpm_event mpm_worker >/dev/null 2>&1 || true
 a2enmod mpm_prefork >/dev/null 2>&1 || true
 
 if [ -n "${APP_KEY}" ]; then
+  php artisan storage:link || true
   php artisan config:cache || true
   php artisan route:cache || true
   php artisan view:cache || true
