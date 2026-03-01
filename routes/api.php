@@ -8,6 +8,12 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+Route::get('prodects', [ProdectController::class, 'index']);
+Route::get('prodects/{prodect}', [ProdectController::class, 'show']);
+
 Route::middleware(['web', 'simple.auth'])->group(function (): void {
-    Route::apiResource('prodects', ProdectController::class);
+    Route::post('prodects', [ProdectController::class, 'store']);
+    Route::put('prodects/{prodect}', [ProdectController::class, 'update']);
+    Route::patch('prodects/{prodect}', [ProdectController::class, 'update']);
+    Route::delete('prodects/{prodect}', [ProdectController::class, 'destroy']);
 });
