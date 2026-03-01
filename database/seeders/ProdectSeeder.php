@@ -12,6 +12,12 @@ class ProdectSeeder extends Seeder
      */
     public function run(): void
     {
-        Prodect::factory(100)->create();
+        $targetCount = 100;
+        $currentCount = Prodect::count();
+        $missing = max(0, $targetCount - $currentCount);
+
+        if ($missing > 0) {
+            Prodect::factory($missing)->create();
+        }
     }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 
 class AuthController extends Controller
@@ -24,7 +26,12 @@ class AuthController extends Controller
             'password' => ['required', 'string'],
         ]);
 
-        if ($credentials['username'] !== 'remon' || $credentials['password'] !== '1122') {
+        $user = User::query()
+            ->where('name', $credentials['username'])
+            ->orWhere('email', $credentials['username'])
+            ->first();
+
+        if (! $user || ! Hash::check($credentials['password'], $user->password)) {
             return back()
                 ->withErrors(['login' => 'Invalid username or password.'])
                 ->withInput($request->only('username'));
@@ -32,7 +39,8 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
         $request->session()->put('simple_auth', true);
-        $request->session()->put('simple_auth_user', 'remon');
+        $request->session()->put('simple_auth_user', $user->name);
+        $request->session()->put('simple_auth_user_id', $user->id);
 
         return redirect()->route('home');
     }
