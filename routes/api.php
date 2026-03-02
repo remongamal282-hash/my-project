@@ -8,6 +8,6 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::middleware(['web', 'simple.auth'])->group(function (): void {
+Route::middleware(['check.api.key', 'throttle:api-prodects'])->group(function (): void {
     Route::apiResource('prodects', ProdectController::class);
 });
