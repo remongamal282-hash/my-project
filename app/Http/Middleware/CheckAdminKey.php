@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckApiKey
+class CheckAdminKey
 {
     /**
      * Handle an incoming request.
@@ -14,11 +14,11 @@ class CheckApiKey
     public function handle(Request $request, Closure $next): Response
     {
         $providedApiKey = (string) $request->header('x-api-key', '');
-        $expectedApiKey = (string) env('API_KEY', '');
+        $expectedApiKey = (string) env('ADMIN_API_KEY', '');
 
         if ($providedApiKey === '' || $expectedApiKey === '' || ! hash_equals($expectedApiKey, $providedApiKey)) {
             return response()->json([
-                'message' => 'Unauthorized: invalid API key.',
+                'message' => 'Unauthorized: invalid admin API key.',
             ], 401);
         }
 

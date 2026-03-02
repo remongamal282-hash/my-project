@@ -23,8 +23,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        RateLimiter::for('api-prodects', function (Request $request): Limit {
-            return Limit::perMinute(10)->by($request->header('x-api-key') ?: $request->ip());
+        RateLimiter::for('prodects-read', function (Request $request): Limit {
+            return Limit::perMinute(60)->by($request->ip());
+        });
+
+        RateLimiter::for('prodects-write', function (Request $request): Limit {
+            return Limit::perMinute(5)->by($request->header('x-api-key') ?: $request->ip());
         });
 
         if ($this->app->environment('production')) {
